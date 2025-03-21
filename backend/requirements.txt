@@ -1,6 +1,11 @@
-flask
-pyaudio
-google-cloud-speech
-google-cloud-texttospeech
-python-dotenv
-google-cloud-aiplatform
+Flask==2.3.3
+gunicorn==21.2.0
+firebase-admin==6.2.0
+google-cloud-speech==2.22.0
+google-cloud-texttospeech==2.14.2
+google-cloud-translate==3.12.1
+pydub==0.25.1
+torch==2.1.0
+numpy==1.26.0
+scipy==1.11.3
+pyaudio==0.2.14
