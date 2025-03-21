@@ -52,8 +52,8 @@ FIREBASE_STORAGE_BUCKET=your-firebase-bucket-name
 GOOGLE_CLOUD_PROJECT=your-google-cloud-project  
 ```
 ### 5. Set Up Google Cloud Credentials
-```
    - Go to [Google Cloud Console](https://console.cloud.google.com).
+```
    - Create a project or use an existing one.
    - Enable the Speech-to-Text and Text-to-Speech APIs:
      - Navigate to "APIs & Services" > "Library."
@@ -66,8 +66,8 @@ GOOGLE_CLOUD_PROJECT=your-google-cloud-project
 ```
 
 ### 6. Set Up Firebase
-```
    - Visit [Firebase Console](https://console.firebase.google.com).
+```
    - Create a new project (e.g., `character-chat-app`).
    - Enable Firestore and Storage:
      - Go to "Firestore Database" > "Create Database" (start in test mode for simplicity).
