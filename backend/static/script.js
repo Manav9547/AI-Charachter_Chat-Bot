@@ -3,162 +3,83 @@
 // const textInput = document.getElementById('textInput');
 // const chatMessages = document.getElementById('chatMessages');
 // const errorDiv = document.getElementById('error');
-// const characterSelect = document.getElementById('characterSelect');
-// const languageSelect = document.getElementById('languageSelect');
-
-// const ipAddress = document.currentScript.getAttribute('data-ip');
-
-// // Flag to track if the page is being reloaded
-// let isReloading = false;
-
-// recordButton.addEventListener('click', async () => {
-//     recordButton.disabled = true;
-//     recordButton.textContent = 'Recording... (5 seconds)';
-//     errorDiv.style.display = 'none';
-
-//     try {
-//         const response = await fetch('/process_audio', {
-//             method: 'POST',
-//             headers: { 'Content-Type': 'application/json' },
-//             body: JSON.stringify({ 
-//                 character: characterSelect.value,
-//                 language: languageSelect.value 
-//             })
-//         });
-
-//         const data = await response.json();
-
-//         if (response.ok) {
-//             addMessage(data.transcript, true, data.character, data.recorded_audio_url);
-//             addMessage(data.response, false, data.character, data.synthesized_audio_url);
-//         } else {
-//             errorDiv.textContent = data.error || 'An error occurred while processing the audio.';
-//             errorDiv.style.display = 'block';
-//         }
-//     } catch (err) {
-//         errorDiv.textContent = 'An error occurred: ' + err.message;
-//         errorDiv.style.display = 'block';
-//     } finally {
-//         recordButton.disabled = false;
-//         recordButton.textContent = '🎤 Record';
-//     }
-// });
-
-// sendButton.addEventListener('click', async () => {
-//     const text = textInput.value.trim();
-//     if (!text) return;
-
-//     addMessage(text, true, characterSelect.value);
-//     textInput.value = '';
-//     errorDiv.style.display = 'none';
-
-//     try {
-//         const response = await fetch('/process_text', {
-//             method: 'POST',
-//             headers: { 'Content-Type': 'application/json' },
-//             body: JSON.stringify({ 
-//                 text, 
-//                 character: characterSelect.value,
-//                 language: languageSelect.value 
-//             })
-//         });
-
-//         const data = await response.json();
-
-//         if (response.ok) {
-//             addMessage(data.response, false, data.character, data.synthesized_audio_url);
-//         } else {
-//             errorDiv.textContent = data.error || 'An error occurred while processing the text.';
-//             errorDiv.style.display = 'block';
-//         }
-//     } catch (err) {
-//         errorDiv.textContent = 'An error occurred: ' + err.message;
-//         errorDiv.style.display = 'block';
-//     }
-// });
-
-// textInput.addEventListener('keypress', (e) => {
-//     if (e.key === 'Enter') sendButton.click();
-// });
-
-// languageSelect.addEventListener('change', () => {
-//     const selectedLanguage = languageSelect.options[languageSelect.selectedIndex].text;
-//     errorDiv.textContent = `Language changed to ${selectedLanguage}`;
-//     errorDiv.style.display = 'block';
-//     errorDiv.style.color = 'green';
-//     setTimeout(() => {
-//         errorDiv.style.display = 'none';
-//     }, 3000);
-// });
-
-// function syncConversation(conversation) {
-//     chatMessages.innerHTML = ''; // Clear existing messages
-//     conversation.forEach(conv => {
-//         addMessage(conv.user_input, true, conv.character, conv.recorded_audio_url);
-//         addMessage(conv.response, false, conv.character, conv.synthesized_audio_url);
-//     });
-// }
-
-// // Detect reload intent
-// window.addEventListener('beforeunload', (event) => {
-//     // Check if the page is being reloaded (e.g., F5, Ctrl+R, or browser refresh button)
-//     if (event.currentTarget.performance.navigation.type === 1) {
-//         isReloading = true;
-//     }
-// });
-
-// // Cleanup only on tab close, not reload
-// window.addEventListener('unload', () => {
-//     if (!isReloading) {
-//         const data = JSON.stringify({ ip_address: ipAddress });
-//         const blob = new Blob([data], { type: 'application/json' });
-//         navigator.sendBeacon('/cleanup', blob);
-//         console.log('Tab closed, cleanup signal sent');
-//     } else {
-//         console.log('Page reloaded, no cleanup');
-//     }
-// });
-
-// // Reset reload flag after load
-// window.addEventListener('load', () => {
-//     isReloading = false;
-// });
-
-// // Load initial conversation
-// syncConversation(initialConversation);
-
-
-
-
-
-
-
-
-
-
-
-// const recordButton = document.getElementById('recordButton');
-// const sendButton = document.getElementById('sendButton');
-// const textInput = document.getElementById('textInput');
-// const chatMessages = document.getElementById('chatMessages');
-// const errorDiv = document.getElementById('error');
-// const characterSelect = document.getElementById('characterSelect');
 // const languageSelect = document.getElementById('languageSelect');
 // const clearChatButton = document.getElementById('clearChatButton');
 
-// const ipAddress = document.currentScript.getAttribute('data-ip');
+// // These variables are set in the HTML script tag
+// // const selectedCharacter = ...;
+// // const ipAddress = ...;
+
+// let isReloading = false;
+
+// async function showLoading(isRecording = false) {
+//     const loadingDiv = document.createElement('div');
+//     loadingDiv.classList.add('loading-message');
+//     loadingDiv.textContent = isRecording ? 'Recording & Processing...' : 'Processing...';
+//     chatMessages.appendChild(loadingDiv);
+//     chatMessages.scrollTop = chatMessages.scrollHeight;
+//     return loadingDiv;
+// }
+
+// function removeLoading(loadingDiv) {
+//     if (loadingDiv) loadingDiv.remove();
+// }
+
+// function syncConversation(conversation) {
+//     chatMessages.innerHTML = '';
+//     conversation.forEach(conv => {
+//         addMessage(conv.user_input, true, conv.character, conv.recorded_audio_url);
+//         addMessage(conv.response, false, conv.character, conv.synthesized_audio_url);
+//     });
+// }
+
+// function addMessage(content, isUser, character = selectedCharacter, audioUrl = null) {
+//     const messageDiv = document.createElement('div');
+//     messageDiv.classList.add('message', isUser ? 'user' : 'character');
+//     messageDiv.style.opacity = '0';
+
+//     const messageContent = document.createElement('div');
+//     messageContent.classList.add('message-content');
+//     if (!isUser) {
+//         messageContent.textContent = `${character.charAt(0).toUpperCase() + character.slice(1)}: ${content}`;
+//     } else {
+//         messageContent.textContent = content;
+//     }
+
+//     if (audioUrl) {
+//         const audioContainer = document.createElement('div');
+//         audioContainer.classList.add('audio-container');
+//         const audio = document.createElement('audio');
+//         audio.controls = true;
+//         audio.src = audioUrl + '?t=' + new Date().getTime();
+//         audio.autoplay = !isUser;
+//         audioContainer.appendChild(audio);
+//         messageContent.appendChild(audioContainer);
+//     }
+
+//     messageDiv.appendChild(messageContent);
+//     chatMessages.appendChild(messageDiv);
+
+//     setTimeout(() => {
+//         messageDiv.style.transition = 'opacity 0.5s ease';
+//         messageDiv.style.opacity = '1';
+//     }, 10);
+
+//     chatMessages.scrollTop = chatMessages.scrollHeight;
+// }
 
 // recordButton.addEventListener('click', async () => {
 //     recordButton.disabled = true;
-//     recordButton.textContent = 'Recording... (5 seconds)';
+//     recordButton.innerHTML = 'Recording...';
 //     errorDiv.style.display = 'none';
+//     const loadingDiv = await showLoading(true);
 
 //     try {
 //         const response = await fetch('/process_audio', {
 //             method: 'POST',
 //             headers: { 'Content-Type': 'application/json' },
 //             body: JSON.stringify({ 
-//                 character: characterSelect.value,
+//                 character: selectedCharacter,
 //                 language: languageSelect.value 
 //             })
 //         });
@@ -176,8 +97,9 @@
 //         errorDiv.textContent = 'An error occurred: ' + err.message;
 //         errorDiv.style.display = 'block';
 //     } finally {
+//         removeLoading(loadingDiv);
 //         recordButton.disabled = false;
-//         recordButton.textContent = '🎤 Record';
+//         recordButton.innerHTML = '<img src="/static/mic_button.png" alt="Record" class="button-icon">';
 //     }
 // });
 
@@ -185,9 +107,10 @@
 //     const text = textInput.value.trim();
 //     if (!text) return;
 
-//     addMessage(text, true, characterSelect.value);
+//     addMessage(text, true, selectedCharacter);
 //     textInput.value = '';
 //     errorDiv.style.display = 'none';
+//     const loadingDiv = await showLoading();
 
 //     try {
 //         const response = await fetch('/process_text', {
@@ -195,7 +118,7 @@
 //             headers: { 'Content-Type': 'application/json' },
 //             body: JSON.stringify({ 
 //                 text, 
-//                 character: characterSelect.value,
+//                 character: selectedCharacter,
 //                 language: languageSelect.value 
 //             })
 //         });
@@ -211,6 +134,8 @@
 //     } catch (err) {
 //         errorDiv.textContent = 'An error occurred: ' + err.message;
 //         errorDiv.style.display = 'block';
+//     } finally {
+//         removeLoading(loadingDiv);
 //     }
 // });
 
@@ -228,27 +153,21 @@
 //     }, 3000);
 // });
 
-// function syncConversation(conversation) {
-//     chatMessages.innerHTML = ''; // Clear existing messages
-//     conversation.forEach(conv => {
-//         addMessage(conv.user_input, true, conv.character, conv.recorded_audio_url);
-//         addMessage(conv.response, false, conv.character, conv.synthesized_audio_url);
-//     });
-// }
-
-// // Clear chat functionality
 // clearChatButton.addEventListener('click', async () => {
 //     try {
 //         const response = await fetch('/clear_chat', {
 //             method: 'POST',
 //             headers: { 'Content-Type': 'application/json' },
-//             body: JSON.stringify({ ip_address: ipAddress })
+//             body: JSON.stringify({ 
+//                 ip_address: ipAddress,
+//                 character: selectedCharacter 
+//             })
 //         });
 
 //         const data = await response.json();
 
 //         if (response.ok) {
-//             chatMessages.innerHTML = ''; // Clear the UI
+//             chatMessages.innerHTML = '';
 //             errorDiv.textContent = 'Chat cleared successfully!';
 //             errorDiv.style.display = 'block';
 //             errorDiv.style.color = 'green';
@@ -267,13 +186,24 @@
 //     }
 // });
 
-// // Load initial conversation
-// syncConversation(initialConversation);
+// window.addEventListener('beforeunload', (event) => {
+//     if (event.currentTarget.performance.navigation.type === 1) {
+//         isReloading = true;
+//     }
+// });
 
+// window.addEventListener('unload', () => {
+//     if (!isReloading) {
+//         const data = JSON.stringify({ ip_address: ipAddress, character: selectedCharacter });
+//         const blob = new Blob([data], { type: 'application/json' });
+//         navigator.sendBeacon('/cleanup', blob);
+//     }
+// });
 
-
-
-
+// window.addEventListener('load', () => {
+//     isReloading = false;
+//     syncConversation(initialConversation);
+// });
 
 
 
@@ -305,16 +235,12 @@ const errorDiv = document.getElementById('error');
 const languageSelect = document.getElementById('languageSelect');
 const clearChatButton = document.getElementById('clearChatButton');
 
-const ipAddress = document.currentScript.getAttribute('data-ip');
+// These variables are set in the HTML script tag
+// const selectedCharacter = ...;
+// const ipAddress = ...;
 
-// Flag to track if the page is being reloaded
 let isReloading = false;
 
-// Variables for audio recording
-let mediaRecorder;
-let audioChunks = [];
-
-// Show loading animation
 async function showLoading(isRecording = false) {
     const loadingDiv = document.createElement('div');
     loadingDiv.classList.add('loading-message');
@@ -324,113 +250,103 @@ async function showLoading(isRecording = false) {
     return loadingDiv;
 }
 
-// Remove loading animation
 function removeLoading(loadingDiv) {
     if (loadingDiv) loadingDiv.remove();
 }
 
-// Add a message to the chat with optional audio playback
-function addMessage(message, isUser, character, audioUrl = null) {
-    const messageDiv = document.createElement('div');
-    messageDiv.classList.add('message', isUser ? 'user-message' : 'bot-message');
-    
-    const prefix = isUser ? 'You' : character;
-    messageDiv.innerHTML = `<strong>${prefix}:</strong> ${message}`;
-    
-    if (audioUrl) {
-        const audio = new Audio(audioUrl);
-        audio.play().catch(err => {
-            console.error('Error playing audio:', err);
-        });
-        const audioLink = document.createElement('a');
-        audioLink.href = audioUrl;
-        audioLink.textContent = ' [Listen]';
-        audioLink.style.color = '#007bff';
-        messageDiv.appendChild(audioLink);
-    }
-    
-    chatMessages.appendChild(messageDiv);
-    chatMessages.scrollTop = chatMessages.scrollHeight;
-}
-
-// Sync conversation history from server
 function syncConversation(conversation) {
-    chatMessages.innerHTML = ''; // Clear existing messages
+    // Preserve the character-showcase div
+    const characterShowcase = document.getElementById('characterShowcase');
+    
+    // Clear all messages except the character-showcase
+    Array.from(chatMessages.children).forEach(child => {
+        if (child !== characterShowcase) {
+            child.remove();
+        }
+    });
+
+    // Add the character-showcase back if it was removed (just in case)
+    if (!chatMessages.contains(characterShowcase)) {
+        chatMessages.insertBefore(characterShowcase, chatMessages.firstChild);
+    }
+
+    // Append conversation messages after the character-showcase
     conversation.forEach(conv => {
         addMessage(conv.user_input, true, conv.character, conv.recorded_audio_url);
         addMessage(conv.response, false, conv.character, conv.synthesized_audio_url);
     });
 }
 
-// Handle speech input with client-side recording
-recordButton.addEventListener('click', async () => {
-    if (recordButton.classList.contains('recording')) {
-        // Stop recording
-        mediaRecorder.stop();
-        recordButton.classList.remove('recording');
-        recordButton.innerHTML = '<img src="/static/mic_button.png" alt="Record" class="button-icon">';
-        recordButton.disabled = true;
+function addMessage(content, isUser, character = selectedCharacter, audioUrl = null) {
+    const messageDiv = document.createElement('div');
+    messageDiv.classList.add('message', isUser ? 'user' : 'character');
+    messageDiv.style.opacity = '0';
+
+    const messageContent = document.createElement('div');
+    messageContent.classList.add('message-content');
+    if (!isUser) {
+        messageContent.textContent = `${character.charAt(0).toUpperCase() + character.slice(1)}: ${content}`;
     } else {
-        // Start recording
-        try {
-            const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-            mediaRecorder = new MediaRecorder(stream);
-            audioChunks = [];
-            
-            mediaRecorder.ondataavailable = (event) => {
-                audioChunks.push(event.data);
-            };
-            
-            mediaRecorder.onstop = async () => {
-                const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
-                const formData = new FormData();
-                formData.append('audio', audioBlob, 'recorded_audio.wav');
-                formData.append('character', selectedCharacter);
-                formData.append('language', languageSelect.value);
+        messageContent.textContent = content;
+    }
 
-                const loadingDiv = await showLoading(true);
-                errorDiv.style.display = 'none';
+    if (audioUrl) {
+        const audioContainer = document.createElement('div');
+        audioContainer.classList.add('audio-container');
+        const audio = document.createElement('audio');
+        audio.controls = true;
+        audio.src = audioUrl + '?t=' + new Date().getTime();
+        audio.autoplay = !isUser;
+        audioContainer.appendChild(audio);
+        messageContent.appendChild(audioContainer);
+    }
 
-                try {
-                    const response = await fetch('/process_audio', {
-                        method: 'POST',
-                        body: formData
-                    });
+    messageDiv.appendChild(messageContent);
+    chatMessages.appendChild(messageDiv);
 
-                    const data = await response.json();
+    setTimeout(() => {
+        messageDiv.style.transition = 'opacity 0.5s ease';
+        messageDiv.style.opacity = '1';
+    }, 10);
 
-                    if (response.ok) {
-                        addMessage(data.transcript, true, data.character, data.recorded_audio_url);
-                        addMessage(data.response, false, data.character, data.synthesized_audio_url);
-                    } else {
-                        errorDiv.textContent = data.error || 'An error occurred while processing the audio.';
-                        errorDiv.style.display = 'block';
-                        errorDiv.style.color = 'red';
-                    }
-                } catch (err) {
-                    errorDiv.textContent = 'An error occurred: ' + err.message;
-                    errorDiv.style.display = 'block';
-                    errorDiv.style.color = 'red';
-                } finally {
-                    removeLoading(loadingDiv);
-                    recordButton.disabled = false;
-                    stream.getTracks().forEach(track => track.stop()); // Stop the microphone stream
-                }
-            };
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+}
 
-            mediaRecorder.start();
-            recordButton.classList.add('recording');
-            recordButton.innerHTML = 'Stop Recording'; // Change button text to indicate recording
-        } catch (err) {
-            errorDiv.textContent = 'Failed to access microphone: ' + err.message;
+recordButton.addEventListener('click', async () => {
+    recordButton.disabled = true;
+    recordButton.innerHTML = 'Recording...';
+    errorDiv.style.display = 'none';
+    const loadingDiv = await showLoading(true);
+
+    try {
+        const response = await fetch('/process_audio', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ 
+                character: selectedCharacter,
+                language: languageSelect.value 
+            })
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+            addMessage(data.transcript, true, data.character, data.recorded_audio_url);
+            addMessage(data.response, false, data.character, data.synthesized_audio_url);
+        } else {
+            errorDiv.textContent = data.error || 'An error occurred while processing the audio.';
             errorDiv.style.display = 'block';
-            errorDiv.style.color = 'red';
-            recordButton.disabled = false;
         }
+    } catch (err) {
+        errorDiv.textContent = 'An error occurred: ' + err.message;
+        errorDiv.style.display = 'block';
+    } finally {
+        removeLoading(loadingDiv);
+        recordButton.disabled = false;
+        recordButton.innerHTML = '<img src="/static/mic_button.png" alt="Record" class="button-icon">';
     }
 });
 
-// Handle text input
 sendButton.addEventListener('click', async () => {
     const text = textInput.value.trim();
     if (!text) return;
@@ -458,23 +374,19 @@ sendButton.addEventListener('click', async () => {
         } else {
             errorDiv.textContent = data.error || 'An error occurred while processing the text.';
             errorDiv.style.display = 'block';
-            errorDiv.style.color = 'red';
         }
     } catch (err) {
         errorDiv.textContent = 'An error occurred: ' + err.message;
         errorDiv.style.display = 'block';
-        errorDiv.style.color = 'red';
     } finally {
         removeLoading(loadingDiv);
     }
 });
 
-// Allow pressing Enter to send text
 textInput.addEventListener('keypress', (e) => {
     if (e.key === 'Enter') sendButton.click();
 });
 
-// Language change notification
 languageSelect.addEventListener('change', () => {
     const selectedLanguage = languageSelect.options[languageSelect.selectedIndex].text;
     errorDiv.textContent = `Language changed to ${selectedLanguage}`;
@@ -485,19 +397,26 @@ languageSelect.addEventListener('change', () => {
     }, 3000);
 });
 
-// Clear chat functionality
 clearChatButton.addEventListener('click', async () => {
     try {
         const response = await fetch('/clear_chat', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ ip_address: ipAddress })
+            body: JSON.stringify({ 
+                ip_address: ipAddress,
+                character: selectedCharacter 
+            })
         });
 
         const data = await response.json();
 
         if (response.ok) {
-            chatMessages.innerHTML = ''; // Clear the UI
+            // Clear messages but keep the character-showcase
+            Array.from(chatMessages.children).forEach(child => {
+                if (child.id !== 'characterShowcase') {
+                    child.remove();
+                }
+            });
             errorDiv.textContent = 'Chat cleared successfully!';
             errorDiv.style.display = 'block';
             errorDiv.style.color = 'green';
@@ -516,27 +435,43 @@ clearChatButton.addEventListener('click', async () => {
     }
 });
 
-// Detect reload intent
 window.addEventListener('beforeunload', (event) => {
     if (event.currentTarget.performance.navigation.type === 1) {
         isReloading = true;
     }
 });
 
-// Cleanup only on tab close, not reload
 window.addEventListener('unload', () => {
     if (!isReloading) {
-        const data = JSON.stringify({ ip_address: ipAddress });
+        const data = JSON.stringify({ ip_address: ipAddress, character: selectedCharacter });
         const blob = new Blob([data], { type: 'application/json' });
         navigator.sendBeacon('/cleanup', blob);
-        console.log('Tab closed, cleanup signal sent');
-    } else {
-        console.log('Page reloaded, no cleanup');
     }
 });
 
-// Reset reload flag after load
 window.addEventListener('load', () => {
     isReloading = false;
-    syncConversation(initialConversation); // Load initial conversation on page load
+    syncConversation(initialConversation);
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

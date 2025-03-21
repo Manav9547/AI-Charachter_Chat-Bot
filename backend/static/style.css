@@ -8,18 +8,18 @@
 }
 
 :root {
-    --text-color: #3E3F5B; /* Dark blue-gray for text */
-    --subheading-color: #5A5B7A; /* Slightly lighter blue-gray for subheadings */
-    --placeholder-color: #6B7280; /* Gray for placeholders */
-    --primary-color: #3E3F5B; /* Primary accent color */
-    --secondary-color: #8AB2A6; /* Secondary accent color */
-    --background-light: #F6F1DE; /* Light cream for background */
-    --background-secondary: #ACD3A8; /* Soft green for secondary background */
-    --error-color: #F87171; /* Soft red for errors */
+    --text-color: #3E3F5B;
+    --subheading-color: #5A5B7A;
+    --placeholder-color: #6B7280;
+    --primary-color: #3E3F5B;
+    --secondary-color: #8AB2A6;
+    --background-light: #F6F1DE;
+    --background-secondary: #ACD3A8;
+    --error-color: #F87171;
 }
 
 body {
-    background: linear-gradient(135deg, var(--background-light), var(--background-secondary)); /* Soft gradient background */
+    background: linear-gradient(135deg, var(--background-light), var(--background-secondary));
     color: var(--text-color);
     overflow: hidden;
 }
@@ -32,9 +32,9 @@ body {
 
 .sidebar {
     width: 250px;
-    background: linear-gradient(145deg, var(--background-secondary), rgba(172, 211, 168, 0.7)); /* Lighter gradient */
+    background: linear-gradient(145deg, var(--background-secondary), rgba(172, 211, 168, 0.7));
     backdrop-filter: blur(10px);
-    box-shadow: 0 0 10px rgba(62, 63, 91, 0.2); /* Subtle shadow with primary color */
+    box-shadow: 0 0 10px rgba(62, 63, 91, 0.2);
     padding: 20px;
     display: flex;
     flex-direction: column;
@@ -61,19 +61,19 @@ body {
 
 .character-images {
     display: flex;
-    flex-direction: column; /* Arrange items vertically */
-    gap: 15px; /* Spacing between items */
+    flex-direction: column;
+    gap: 15px;
 }
 
 .character-item {
     display: flex;
-    align-items: center; /* Align image and name vertically */
-    gap: 10px; /* Space between image and name */
+    align-items: center;
+    gap: 10px;
 }
 
 .character-image {
-    width: 80px; /* Increased size */
-    height: 80px; /* Increased size */
+    width: 80px;
+    height: 80px;
     border-radius: 50%;
     object-fit: cover;
     cursor: pointer;
@@ -84,11 +84,6 @@ body {
 .character-image:hover {
     transform: scale(1.1);
     box-shadow: 0 0 10px rgba(62, 63, 91, 0.5);
-}
-
-.character-image.selected {
-    border: 2px solid var(--primary-color);
-    box-shadow: 0 0 15px rgba(62, 63, 91, 0.7);
 }
 
 .character-name {
@@ -153,17 +148,34 @@ body {
     position: relative;
 }
 
+.welcome-message {
+    padding: 20px;
+    text-align: center;
+}
+
+.welcome-message h2 {
+    margin-bottom: 15px;
+    color: var(--primary-color);
+}
+
+.welcome-message ul {
+    list-style-type: none;
+    margin: 20px 0;
+}
+
+.welcome-message li {
+    margin: 10px 0;
+}
+
 .character-showcase {
+    margin-bottom: 20px;
     display: flex;
-    flex-direction: column;
-    align-items: center;
     justify-content: center;
-    height: 100%;
 }
 
 .character-display {
-    display: none; /* Hidden by default, shown via JS */
-    flex-direction: row;
+    display: flex;
+    flex-direction: column;
     align-items: center;
     gap: 20px;
     max-width: 600px;
@@ -171,6 +183,7 @@ body {
     background: rgba(255, 255, 255, 0.1);
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(62, 63, 91, 0.2);
+    text-align: center;
 }
 
 .showcase-image {
@@ -198,8 +211,7 @@ body {
     margin-bottom: 15px;
     display: flex;
     align-items: flex-start;
-    opacity: 0; /* Start hidden for fade-in animation */
-    animation: fadeIn 0.5s ease forwards; /* Fade-in animation */
+    animation: fadeIn 0.5s ease forwards;
 }
 
 .message.user {
@@ -222,20 +234,20 @@ body {
 }
 
 .message.user .message-content {
-    background: var(--primary-color); /* #3E3F5B for user messages */
-    color: #fff; /* White text for contrast */
+    background: var(--primary-color);
+    color: #fff;
     border-radius: 16px 16px 4px 16px;
 }
 
 .message.character .message-content {
-    background: var(--secondary-color); /* #8AB2A6 for character messages */
+    background: var(--secondary-color);
     color: #fff;
     border-radius: 16px 16px 16px 4px;
 }
 
 .message-content:hover {
     transform: translateY(-2px);
-    box-shadow: 0 4px 15px rgba(62, 63, 91, 0.3); /* Glow effect on hover */
+    box-shadow: 0 4px 15px rgba(62, 63, 91, 0.3);
 }
 
 .chat-input {
@@ -265,15 +277,16 @@ body {
     height: 36px;
 }
 
-.chat-input button:last-child {
-    margin-left: 10px;
-    margin-right: 0;
+#clearChatButton {
+    border-radius: 20px;
+    width: auto;
+    padding: 8px 16px;
 }
 
 .chat-input button:hover {
     background: var(--secondary-color);
     box-shadow: 0 0 15px rgba(138, 178, 166, 0.5);
-    transform: scale(1.1); /* Slightly larger scale on hover */
+    transform: scale(1.1);
 }
 
 .button-icon {
@@ -289,10 +302,11 @@ body {
     border-radius: 20px;
     font-size: 14px;
     color: var(--text-color);
-    background: rgba(172, 211, 168, 0.2); /* Derived from #ACD3A8 */
+    background: rgba(172, 211, 168, 0.2);
     outline: none;
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.1) inset;
     transition: all 0.3s ease;
+    margin-right: 10px;
 }
 
 .chat-input input::placeholder {
@@ -301,7 +315,7 @@ body {
 
 .chat-input input:focus {
     background: rgba(172, 211, 168, 0.3);
-    box-shadow: 0 0 10px rgba(62, 63, 91, 0.5); /* Glow effect on focus */
+    box-shadow: 0 0 10px rgba(62, 63, 91, 0.5);
 }
 
 .loading-message {
@@ -314,7 +328,7 @@ body {
     background-size: 200% 100%;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    animation: gradientShift 3s ease infinite, pulse 1.5s ease infinite; /* Added pulse effect */
+    animation: gradientShift 3s ease infinite, pulse 1.5s ease infinite;
 }
 
 #error {
@@ -324,7 +338,6 @@ body {
     color: var(--error-color);
 }
 
-/* Animations */
 @keyframes gradientShift {
     0% { background-position: 0% 50%; }
     50% { background-position: 100% 50%; }
@@ -361,6 +374,11 @@ body {
         height: 32px;
     }
 
+    #clearChatButton {
+        width: auto;
+        padding: 6px 12px;
+    }
+
     .button-icon {
         width: 18px;
         height: 18px;
@@ -372,7 +390,7 @@ body {
     }
 
     .character-image {
-        width: 60px; /* Slightly smaller on mobile */
+        width: 60px;
         height: 60px;
     }
 
