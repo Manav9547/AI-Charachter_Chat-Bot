@@ -13,7 +13,7 @@ This project features four distinct AI characters—Jax, Victor, Lila, and Elias
 - **Lila Moreau**: A flirtatious ex-private investigator who charms while assisting.
 - **Elias Sterling**: A wise mentor offering thoughtful, practical guidance.
 
-## Features
+## Features✨
 - **Voice Input**: Record audio with voice activity detection and noise reduction.
 - **Transcription**: Convert audio to text using Google Cloud Speech-to-Text.
 - **Text-to-Speech**: Generate natural-sounding responses with Google Cloud TTS, enhanced with prosody and character-specific effects.
@@ -25,7 +25,7 @@ This project features four distinct AI characters—Jax, Victor, Lila, and Elias
 ## Setup
 Follow these detailed steps to set up the Character Chat Application on your local machine:
 
-### 1. Prerequisites
+### 1. Prerequisites 📋
 - Python 3.8+
 - Flask
 - Firebase account with Firestore & Storage configured
@@ -132,7 +132,7 @@ GOOGLE_CLOUD_PROJECT=your-google-cloud-project
    - Click "Clear Chat" to reset the conversation.
 ```
 
-## File Structure
+## File Structure 🌳
 ```
 /character-chatbot  
 │── static/  
@@ -179,7 +179,7 @@ GOOGLE_CLOUD_PROJECT=your-google-cloud-project
 - Firebase Issues: Confirm service account permissions and bucket setup.
 - No Audio Output: Ensure FFmpeg is installed and in PATH.
 
-### Contributing
+### Contributing 🌟
  Submit pull requests or open issues for bugs and features!
 
 
