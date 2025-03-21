@@ -184,7 +184,7 @@ GOOGLE_CLOUD_PROJECT=your-google-cloud-project
 
 
 ## Credits
- Developed by **`/DALL-Eminators`**.
+ Developed by **`DALL-Eminators`**.
 
 ## License
  MIT License.
