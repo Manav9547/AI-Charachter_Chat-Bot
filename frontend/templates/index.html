@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shinchan & Friends Chatbox</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div class="chat-container">
+        <div class="chat-header">
+            <h1>Chat with Shinchan & Friends</h1>
+            <p>Speak or type to chat with your favorite character!</p>
+            <div class="selectors">
+                <div class="selector-group">
+                    <label for="characterSelect">Character:</label>
+                    <select id="characterSelect">
+                        <option value="shinchan">Shinchan</option>
+                        <option value="kazama">Kazama</option>
+                        <option value="nene">Nene</option>
+                        <option value="masao">Masao</option>
+                    </select>
+                </div>
+                <div class="selector-group">
+                    <label for="languageSelect">Language:</label>
+                    <select id="languageSelect">
+                        <option value="en-US">English</option>
+                        <option value="hi-IN">Hindi</option>
+                        <option value="ta-IN">Tamil</option>
+                        <option value="kn-IN">Kannada</option>
+                        <option value="te-IN">Telugu</option>
+                        <option value="ml-IN">Malayalam</option>
+                        <option value="bn-IN">Bengali</option>
+                        <option value="mr-IN">Marathi</option>
+                        <option value="gu-IN">Gujarati</option>
+                        <option value="pa-IN">Punjabi</option>
+                        <option value="ur-IN">Urdu</option>
+                        <option value="ja-JP">Japanese</option>
+                        <option value="fr-FR">French</option>
+                        <option value="de-DE">German</option>
+                        <option value="es-ES">Spanish</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="chat-messages" id="chatMessages">
+            <!-- Chat messages will be dynamically added here -->
+        </div>
+
+        <div class="chat-input">
+            <button id="recordButton">🎤 Record</button>
+            <input type="text" id="textInput" placeholder="Type your message...">
+            <button id="sendButton">Send</button>
+        </div>
+
+        <div id="error" style="display: none; color: red;"></div>
+    </div>
+
+    <!-- Render initial conversation history from Flask -->
+    <script>
+        const initialConversation = {{ conversation|tojson|safe }};
+        function addMessage(content, isUser, character = 'shinchan', audioUrl = null) {
+            const messageDiv = document.createElement('div');
+            messageDiv.classList.add('message', isUser ? 'user' : 'character');
+
+            const messageContent = document.createElement('div');
+            messageContent.classList.add('message-content');
+            if (!isUser) {
+                messageContent.classList.add(character); // Add character-specific class
+                messageContent.textContent = `${character.charAt(0).toUpperCase() + character.slice(1)}: ${content}`;
+            } else {
+                messageContent.textContent = content;
+            }
+
+            if (audioUrl) {
+                const audio = document.createElement('audio');
+                audio.controls = true;
+                audio.src = audioUrl + '?t=' + new Date().getTime(); // Prevent caching
+                audio.autoplay = !isUser; // Auto-play character response only
+                messageContent.appendChild(audio);
+            }
+
+            messageDiv.appendChild(messageContent);
+            document.getElementById('chatMessages').appendChild(messageDiv);
+            document.getElementById('chatMessages').scrollTop = document.getElementById('chatMessages').scrollHeight;
+        }
+
+        // Load initial conversation history
+        initialConversation.forEach(conv => {
+            addMessage(conv.user_input, true, conv.character, conv.recorded_audio_url);
+            addMessage(conv.response, false, conv.character, conv.synthesized_audio_url);
+        });
+    </script>
+
+    <script src="/static/script.js"></script>
+</body>
+</html>
