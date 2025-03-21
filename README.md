@@ -90,16 +90,21 @@ GOOGLE_CLOUD_PROJECT=your-google-cloud-project
      - FFmpeg is required for audio conversion. Install it based on your OS:
      - On macOS:
      brew install ffmpeg
-     - On Ubuntu:
-     sudo apt-get install ffmpeg
-     - On Windows:
-       - Download from [FFmpeg website](https://ffmpeg.org/download.html).
-       - Extract and add the `bin` folder to your system PATH (e.g., `C:\ffmpeg\bin`).
-     - Verify installation:
-     ffmpeg -version
 ```
+   #### - On Ubuntu:
+   ```
+      sudo apt-get install ffmpeg
+   ```
+   #### - On Windows:
+   - Download from [FFmpeg website](https://ffmpeg.org/download.html).
+   ```
+       - Extract and add the `bin` folder to your system PATH (e.g., `C:\ffmpeg\bin`).
+       - Verify installation:
+       ffmpeg -version
+   ```
 
 ### 9. Verify Setup
+
 ```
     - Ensure all dependencies are installed (`pip list` should show `flask`, `google-cloud-speech`, etc.).
    - Check that `.env` is correctly configured and service account JSONs are accessible.
