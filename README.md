@@ -4,8 +4,9 @@ A Flask-based interactive chatbot application that lets users engage in conversa
 
 ## Overview
 
-This project features four distinct AI characters—Jax, Victor, Lila, and Elias—each with their own personality, backstory, and tone. Users can chat with them by recording audio or typing text, with responses generated in real-time and delivered via synthesized speech. The app supports multiple languages, stores conversation history in Firebase, and includes audio processing enhancements for a natural experience.
+DALL-BOT is a web-based chat application that allows users to interact with four distinct AI characters: Victor Graves, Jax Carter, Elias Sterling, and Lila Moreau. Each character has a unique personality and backstory, providing tailored responses to user inputs via text or audio. The application leverages Google Cloud services for speech-to-text (STT), text-to-speech (TTS), and translation, alongside Firebase for data storage and the Gemini API for character response generation. Built with Flask, this project offers multilingual support and a dynamic, user-friendly interface.
 
+This project is designed as a cloud-deployed service and does not include instructions for local setup, focusing instead on its architecture and functionality.
 
 ### Characters
 - **Jax "Wildcard" Carter**: A sarcastic comedian who roasts users while providing helpful answers.
@@ -110,36 +111,47 @@ GOOGLE_CLOUD_PROJECT=your-google-cloud-project
    - Check that `.env` is correctly configured and service account JSONs are accessible.
 ```
 
-### Running the Application
+### 10. Render Setup
+   - Sign up for a Render account at [Render](render.com)
+```
+    - Create a new Web Service and connect your GitHub repository.
+    -  Set the build command to pip install -r requirements.txt and the start command to python app.py.
+    -  Add the necessary environment variables in Render's dashboard.
+    -  Deploy the application.
+```
+   
 
-### 1. Start the Flask Server
+### Usage
+
+
+### 1. Access the App
+
+### 2. Visit the deployed application
+
+### 3. Select a Character
 ```
-   python app.py
-   The app runs on `http://localhost:5003`.
+   - Click a character from the sidebar (Victor, Jax, Elias, or Lila).
 ```
-### 2. Access the Web Interface
+### 4. Choose a Language
+
 ```   
-   - Open a browser and navigate to `http://localhost:5003`.
-   - Select a character from the sidebar.
+   - Use the dropdown to select your preferred language.
 ```
-### 3. Interact with Characters
+### 5. Interact
+
 ```
-   - Voice Input: Click the microphone button to record (up to 15 seconds).
-   - Text Input: Type a message and click send.
-   - Select a language from the dropdown.
-```
-### 4.  View Conversation History
-```   
-   - Messages and audio responses appear in the chat window.
-```
-### 5. Clear Chat
-```
-   - Click "Clear Chat" to reset the conversation.
+   - Voice: Click the microphone button, speak, and click again to stop. The audio will be transcribed and responded to.
+   - Text: Type a message and press "Send" or Enter.
+   - Clear Chat: Click "Clear Chat" to reset the conversation.
 ```
 
+### 6. Listen to Responses
+```
+   - Responses include synthesized audio playable via the embedded audio controls.
+```
 ## File Structure 🌳
 ```
-/character-chatbot  
+/backend  
 │── static/  
 │   ├── style.css         # Frontend styles  
 │   ├── script.js         # Chat UI interactions  
@@ -158,7 +170,6 @@ GOOGLE_CLOUD_PROJECT=your-google-cloud-project
 ### Dependencies
 
 - flask: Web framework
-- pyaudio: Audio recording
 - google-cloud-speech: Speech-to-Text
 - google-cloud-texttospeech: Text-to-Speech
 - python-dotenv: Environment variable management
